@@ -1,15 +1,15 @@
 import React from 'react'
 import EventItem from './EventItem'
 import './App.css';
+import NewEvent from './NewEvent'
 
 
 let today = new Date();
 let locale = "en-us";
 let month = today.toLocaleString(locale, { month: "long" });
 
-function daysInMonth(month, year) {
-    return new Date(year, month, 0).getDate();
-}
+let daysInMonth = today.getDate()
+let test = new Date(2018, 1, 0).getDate()
 //
 // function getdates () => {
 // let datearray = []
@@ -19,6 +19,9 @@ function daysInMonth(month, year) {
 // return datearray
 // }
 
+daysInMonth = (month, year) => {
+    return new Date(year, month, 0).getDate();
+}
 
 
 
@@ -26,15 +29,16 @@ export default class CalendarContainer extends React.Component {
 
 
   render() {
-
+    console.log(daysInMonth(1, 2018))
     return(
       <div>
+         <NewEvent locations={this.props.locations}/>
         {this.props.events.map(event => {return <EventItem event={event} key={`${event.id}_list`} />})}
         <div>
-           <header classNameName="calendar-header">
+           <header className="calendar-header">
               <h1>{month}</h1>
            </header>
-           <ul classNameName="weekdays">
+           <ul className="weekdays">
                 <li>Sunday</li>
                 <li>Monday</li>
                 <li>Tuesday</li>
