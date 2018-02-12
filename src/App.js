@@ -17,7 +17,17 @@ class App extends Component {
   state = {
     events: [],
     locations: [],
-    auth: { currentUser: null }
+    invites: [],
+    auth: { currentUser: null },
+    newEvent: {
+        title: '',
+        date_time: '',
+        event_type: '',
+        location_id: ''
+    },
+    showNewEventForm: false,
+    showLocationInDetail: false,
+    locationDetail: []
   }
 
   setLoggedInUser = (user) => {
@@ -35,7 +45,10 @@ class App extends Component {
 removeLoggedInUser = () => {
   localStorage.removeItem('token')
   this.setState({
-    auth: { currentUser: null }
+    auth: { currentUser: null },
+    events: [],
+    locations: [],
+    invites: []
   })
   this.props.history.push('/login')
 }
@@ -49,7 +62,13 @@ removeLoggedInUser = () => {
           this.setState({ auth: { currentUser: user } })
           console.log(`user: ${user.email}`)
 
-          adapter.eventHandlers.getEvents()
+          adapter.eventHandlers.getInvites()
+          .then(resp=> this.filterInvitesForCurrentUser(resp))
+          .then(res => this.setState({
+            invites: res
+          }))
+          .then(ress => adapter.eventHandlers.getEvents())
+          .then(resp => this.filterEventsForInvites(resp))
           .then(res => this.setState({
             events: res
           }))
@@ -58,7 +77,7 @@ removeLoggedInUser = () => {
           .then(res => this.setState({
             locations: res
           }))
-          
+
         } else {
           this.setState({ auth: { currentUser: null } })
         }
@@ -68,8 +87,62 @@ removeLoggedInUser = () => {
     }
   }
 
+  filterInvitesForCurrentUser = (inviteList) => {
+    return inviteList.filter(invite => invite.user_id === this.state.auth.currentUser.id)
+  }
+
+  filterEventsForInvites = (eventList) => {
+
+    let invites = this.state.invites.map(invite=> invite.event_id)
+
+    return eventList.filter(event => invites.indexOf(event.id)  > -1)
+
+  }
+
+
+  onInputChange = (e) => {
+    this.setState({
+      newEvent: {
+        ...this.state.newEvent,
+        [e.target.name]: e.target.value
+    }
+  })
+  }
+
+handleNewEventSubmit = (event) => {
+  event.preventDefault()
+  adapter.eventHandlers.addEvent(this.state.newEvent)
+  .then(res => adapter.eventHandlers.addInvite( this.state.auth.currentUser.id, res.id))
+  .then(resp=>console.log(resp));
+  this.setState({
+    events: [...this.state.events, this.state.newEvent],
+  });
+  this.setState({
+    newEvent: {
+      title: '',
+      date_time: '',
+      event_type: '',
+      location_id: ''
+    },
+    showNewEventForm: !this.state.showNewEventForm
+  })
+
+}
+
+handleNewEventButtonClick = () => {
+  this.setState({
+    showNewEventForm: !this.state.showNewEventForm
+  })
+}
+
+handleLocationInfoClick = () => {
+  this.setState({
+    showLocationInDetail: !this.state.showLocationInDetail
+  })
+}
+
   render() {
-    //console.log(this.state.events)
+    console.log(this.state)
     return (
       <div className="App">
         <Navbar currentUser={this.state.auth.currentUser}
@@ -85,7 +158,16 @@ removeLoggedInUser = () => {
 
           <Route exact path="/calendar" render={ () => {
             return <CalendarContainer events={this.state.events} authInfo={this.state.auth}
-            locations={this.state.locations}/>
+            locations={this.state.locations}
+            onInputChange={this.onInputChange}
+            newEvent={this.state.newEvent}
+            handleNewEventSubmit={this.handleNewEventSubmit}
+            handleNewEventButtonClick={this.handleNewEventButtonClick}
+            showNewEventForm={this.state.showNewEventForm}
+            handleLocationInfoClick={this.handleLocationInfoClick}
+            showLocationInDetail={this.state.showLocationInDetail}
+
+            />
           } } />
 
           <Route path="/404" component={ CatchAll } />
@@ -100,3 +182,5 @@ removeLoggedInUser = () => {
 }
 
 export default withRouter(App);
+
+// .then(res => adapter.eventHandlers.addInvite(res.id, this.state.currentUser.id))

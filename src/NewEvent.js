@@ -3,30 +3,41 @@ import SelectLocation from './SelectLocation';
 
 class NewEvent extends React.Component {
 
-  state = {
-    title: '',
-    date_time: '',
-    event_type: '',
-    location: ''
-  }
-
-
-onInputChange = (e) => {
-  this.setState({
-    [e.target.name]: e.target.value
-  })
-}
-
-
-
 
 render (){
   return (
     <div>
       <h1> new event form</h1>
-      <form>
-         <SelectLocation locations={this.props.locations}/>
+      <form onSubmit={this.props.handleNewEventSubmit}>
+        <label>Event Title</label>
+        <input
+          type="text"
+          value={this.props.newEvent.title}
+          onChange={this.props.onInputChange}
+          name="title"/> <br/>
+
+        <label>Event Date and Time</label>
+        <input
+           type="datetime" value={this.props.newEvent.date_time} onChange={this.props.onInputChange}
+           name="date_time" /> <br/>
+
+        <label>Event Type</label>
+        <select
+            onChange={this.props.onInputChange}
+            name="event_type">
+              <option value='0'>Select One</option>
+              <option key="1social" value='Social'>Social</option>
+              <option key="1work" value='Work'>Work</option>
+              <option key="1family" value='Family'>Family</option>
+        </select> <br/>
+        <label>Select Location</label>
+         <SelectLocation
+            locations={this.props.locations}
+            onChange={this.props.onInputChange}
+         /> <br/>
+        <input type="submit" value="Add Event"/>
       </form>
+      <button onClick={this.props.handleNewEventButtonClick}>Nevermind</button>
     </div>
   )
 }

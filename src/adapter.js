@@ -19,6 +19,28 @@ const getEvents = () => {
   }).then(res => res.json())
 }
 
+const getInvites = () => {
+  return fetch(`${API_ROOT}/invites`, {
+    headers: headers
+  }).then(res => res.json())
+}
+
+const addEvent = (newEvent) => {
+  return fetch(`${API_ROOT}/events`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({event: newEvent})
+  }).then(res => res.json())
+}
+
+const addInvite = (user_id, event_id) => {
+  return fetch(`${API_ROOT}/invites`, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({invite: {user_id: user_id, event_id: event_id}})
+  }).then(res => res.json())
+}
+
 const getLocations = () => {
   return fetch(`${API_ROOT}/locations`, {
     headers: headers
@@ -51,7 +73,10 @@ const getLoggedInUser = () => {
 export default {
   eventHandlers: {
     getEvents: getEvents,
-    getLocations: getLocations
+    getLocations: getLocations,
+    addEvent: addEvent,
+    addInvite: addInvite,
+    getInvites: getInvites
   },
   auth: {
     login,

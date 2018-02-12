@@ -1,13 +1,16 @@
 import React from 'react';
 
-const SelectLocation = ({locations}) => {
+const SelectLocation = ({locations, onChange}) => {
 
   return (
-    <select>
-    defaultValue='1'>
-       <option value='1'>Select One</option>
+    
+    <select
+       onChange={onChange}
+       name="location_id"
+       >
+       <option value='0'>Select One</option>
        {locations.map((location) =>
-         <option key={location.id} value={location}>{location.name}</option>
+         <option key={location.id} value={location.id}>{location.name}</option>
        )}
 
     </select>
