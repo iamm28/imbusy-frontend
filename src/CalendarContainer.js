@@ -2,247 +2,135 @@ import React from 'react'
 import EventItem from './EventItem'
 import './App.css';
 
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
 let today = new Date();
-let locale = "en-us";
-let month = today.toLocaleString(locale, { month: "long" });
-
-function daysInMonth(month, year) {
-    return new Date(year, month, 0).getDate();
-}
-//
-// function getdates () => {
-// let datearray = []
-// for(let  i = 1; i < 13; i++) {
-//     datearray.push(daysInMonth(i, 2018));
-// }
-// return datearray
-// }
-
-
-
+let dd = today.getDate();
+let mm = today.getMonth()+1;
+let yyyy = today.getFullYear();
 
 export default class CalendarContainer extends React.Component {
 
+  state = {
+    year: yyyy,
+    month: mm
+  }
 
+  getMonth() { //gets month in word form
+    return monthNames[this.state.month-1]
+  }
+
+  getDaysInMonth () { //gets number of days in a month
+    return new Date(this.state.year, this.state.month, 0).getDate();
+  }
+
+  getDayOfWeek () { //gets the day of the week the month starts on in number now but could make it in words too
+    if(this.state.month < 10) {
+      return new Date(this.state.year + "-" + this.state.month + "-01").getDay()
+    } else {
+      return new Date(this.state.year + "-" + this.state.month + "-01").getDay() + 1
+    }
+  }
+
+  nextMonth = () => {
+    if (this.state.month === 12) {
+      this.setState({
+        month: 1,
+        year: this.state.year + 1
+      })
+    } else {
+      this.setState({
+        month: this.state.month + 1
+      })
+    }
+  }
+
+  prevMonth = () => {
+    if (this.state.month === 1) {
+      this.setState({
+        month: 12,
+        year: this.state.year - 1
+      })
+    } else {
+      this.setState({
+        month: this.state.month - 1
+      })
+    }
+  }
+
+  displayFillers() {
+    let fillers = []
+    for (let i = 0; i < this.getDayOfWeek(); i++) {
+      fillers.push(
+        <div className="day" key={i+1}>
+        </div>
+      );
+    }
+    return fillers
+  }
+
+  displayDays() {
+    let days = []
+    let passMonth = this.state.month
+    let passYear = this.state.year
+    for (let i = 0; i < this.getDaysInMonth(); i++) {
+
+      function getEventDay(event) {
+        return new Date(event.date_time).getDate()+1
+      }
+
+      function getEventMonth(event) {
+        return new Date(event.date_time).getMonth()+1
+      }
+
+      function getEventYear(event) {
+        return new Date(event.date_time).getYear()-100+2000
+      }
+
+      function filterEvent(event,i) {
+        if ((passMonth === getEventMonth(event)) && ((i+1)===getEventDay(event)) && (passYear === getEventYear(event))) {
+          return true
+        } else {
+          return false
+        }
+      }
+
+      let todaysEvents = this.props.events.filter( event => {
+        return filterEvent(event,i)
+      })
+      days.push(
+        <div className="day" key={i+1}>
+          <h3 className="day-label">{i+1}</h3>
+          {todaysEvents.map(event => {return <EventItem event={event} key={`${event.id}_list`}/>})}
+        </div>
+      );
+    }
+    return days
+  }
+
+  //fix rendering button names jan,dec
   render() {
-
     return(
       <div>
-        {this.props.events.map(event => {return <EventItem event={event} key={`${event.id}_list`} />})}
-        <div>
-           <header classNameName="calendar-header">
-              <h1>{month}</h1>
-           </header>
-           <ul classNameName="weekdays">
-                <li>Sunday</li>
-                <li>Monday</li>
-                <li>Tuesday</li>
-                <li>Wednesday</li>
-                <li>Thursday</li>
-                <li>Friday</li>
-                <li>Saturday</li>
-           </ul>
-
-                     <ul className="days">
-                         <li className="day other-month">
-                             <div className="date">27</div>
-                         </li>
-                         <li className="day other-month">
-                             <div className="date">28</div>
-                             <div className="event">
-                                 <div className="event-desc">
-                                     HTML 5 lecture with Brad Traversy from Eduonix
-                                 </div>
-                                 <div className="event-time">
-                                     1:00pm to 3:00pm
-                                 </div>
-                             </div>
-                         </li>
-                         <li className="day other-month">
-                             <div className="date">29</div>
-                         </li>
-                         <li className="day other-month">
-                             <div className="date">30</div>
-                         </li>
-                         <li className="day other-month">
-                             <div className="date">31</div>
-                         </li>
-
-
-                         <li className="day">
-                             <div className="date">1</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">2</div>
-                             <div className="event">
-                                 <div className="event-desc">
-                                     Career development @ Community College room #402
-                                 </div>
-                                 <div className="event-time">
-                                     2:00pm to 5:00pm
-                                 </div>
-                             </div>
-                         </li>
-                     </ul>
-
-                     <ul className="days">
-                         <li className="day">
-                             <div className="date">3</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">4</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">5</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">6</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">7</div>
-                             <div className="event">
-                                 <div className="event-desc">
-                                     Group Project meetup
-                                 </div>
-                                 <div className="event-time">
-                                     6:00pm to 8:30pm
-                                 </div>
-                             </div>
-                         </li>
-                         <li className="day">
-                             <div className="date">8</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">9</div>
-                         </li>
-                     </ul>
-
-                     <ul className="days">
-                         <li className="day">
-                             <div className="date">10</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">11</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">12</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">13</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">14</div><div className="event">
-                                 <div className="event-desc">
-                                     Board Meeting
-                                 </div>
-                                 <div className="event-time">
-                                     1:00pm to 3:00pm
-                                 </div>
-                             </div>
-                         </li>
-                         <li className="day">
-                             <div className="date">15</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">16</div>
-                         </li>
-                     </ul>
-
-
-
-                     <ul className="days">
-                         <li className="day">
-                             <div className="date">17</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">18</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">19</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">20</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">21</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">22</div>
-                             <div className="event">
-                                 <div className="event-desc">
-                                     Conference call
-                                 </div>
-                                 <div className="event-time">
-                                     9:00am to 12:00pm
-                                 </div>
-                             </div>
-                         </li>
-                         <li className="day">
-                             <div className="date">23</div>
-                         </li>
-                     </ul>
-
-
-
-                     <ul className="days">
-                         <li className="day">
-                             <div className="date">24</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">25</div>
-                             <div className="event">
-                                 <div className="event-desc">
-                                     Conference Call
-                                 </div>
-                                 <div className="event-time">
-                                     1:00pm to 3:00pm
-                                 </div>
-                             </div>
-                         </li>
-                         <li className="day">
-                             <div className="date">26</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">27</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">28</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">29</div>
-                         </li>
-                         <li className="day">
-                             <div className="date">30</div>
-                         </li>
-                     </ul>
-
-
-                     <ul className="days">
-                         <li className="day">
-                             <div className="date">31</div>
-                         </li>
-                         <li className="day other-month">
-                             <div className="date">1</div>
-                         </li>
-                         <li className="day other-month">
-                             <div className="date">2</div>
-                         </li>
-                         <li className="day other-month">
-                             <div className="date">3</div>
-                         </li>
-                         <li className="day other-month">
-                             <div className="date">4</div>
-                         </li>
-                         <li className="day other-month">
-                             <div className="date">5</div>
-                         </li>
-                         <li className="day other-month">
-                             <div className="date">6</div>
-                         </li>
-                     </ul>
-
-             </div>
+        <span>
+          <button onClick={this.prevMonth}>{monthNames[this.state.month-2]}</button>
+          <button onClick={this.nextMonth}>{monthNames[this.state.month]}</button>
+          <h2 className="month"> {this.getMonth()} - {this.state.year}</h2>
+        </span>
+        <div className="day-of-week">
+          <div>Sunday</div>
+          <div>Monday</div>
+          <div>Tuesday</div>
+          <div>Wednesday</div>
+          <div>Thursday</div>
+          <div>Friday</div>
+          <div>Saturday</div>
+        </div>
+        <div className="week">
+          {this.displayFillers()}
+          {this.displayDays()}
+        </div>
       </div>
     )
   }

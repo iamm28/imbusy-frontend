@@ -22,6 +22,51 @@
   font-size: large;
 }
 
+.month {
+  font-size: large;
+}
+
+.week {
+  display:grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 2px 10px;
+}
+
+.day-of-week {
+  display:grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 2px 10px;
+}
+
+.day-label {
+    grid-row-start: 1;
+}
+
+.day {
+  border: 1px solid black;
+  border-collapse:collapse;
+  overflow: auto;
+  height: 130px;
+}
+.Work {
+  background-color: #0099ff;
+}
+.Family {
+  background-color: #ff6666;
+}
+.Social {
+  background-color: #00cc66;
+}
+
+.event {
+  --span: 1;
+  /* background-color: #CCC; */
+  grid-column-end: span var(--span);
+  border: 1px solid black;
+}
+
+.day:nth-child(1) > .event { grid-column-start: 1; }
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
