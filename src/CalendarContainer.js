@@ -133,7 +133,11 @@ export default class CalendarContainer extends React.Component {
        </div>
        { this.props.eventInDetail &&
          <div>
-           <EventPopup event={this.props.eventInDetail} locations={this.props.locations} handleEventEdit={this.props.handleEventEdit} handleEventDelete={this.props.handleEventDelete}/>
+           <EventPopup event={this.props.eventInDetail} locations={this.props.locations} handleEventEdit={this.props.handleEventEdit} handleEventDelete={this.props.handleEventDelete}
+           canEditForm={this.props.canEditForm}
+           onInputChange={this.props.onInputChange}
+           editEvent={this.props.newEvent}
+           />
          </div>
        }
         <span>

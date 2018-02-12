@@ -3,7 +3,7 @@ import React from 'react';
 const SelectLocation = ({locations, onChange}) => {
 
   return (
-    
+
     <select
        onChange={onChange}
        name="location_id"

@@ -26,7 +26,8 @@ class App extends Component {
         location_id: ''
     },
     showNewEventForm: false,
-    eventInDetail: undefined
+    eventInDetail: undefined,
+    canEditForm: false
   }
 
   setLoggedInUser = (user) => {
@@ -116,6 +117,7 @@ getLocations = () => {
   })
   }
 
+
 handleNewEventSubmit = (event) => {
   event.preventDefault()
   adapter.eventHandlers.addEvent(this.state.newEvent)
@@ -151,14 +153,56 @@ handleEventDetailsClick = (event) => {
 }
 
 handleEventEdit = (event) => {
-  //
+  console.log(event)
+  this.setState({
+    canEditForm: !this.state.canEditForm,
+    newEvent: {
+      title: event.title,
+      date_time: event.date_time,
+      event_type: event.event_type,
+      location_id: event.location_id
+    }
+  })
+  adapter.eventHandlers.editEvent(event.id, this.state.newEvent).then(console.log)
+  
 }
 
 handleEventDelete = (event) => {
-  adapter.eventHandlers.deleteEvent(event).then(console.log)
+  this.removeEventFromList(event)
+  this.removeInvites(event)
+  adapter.eventHandlers.deleteEvent(event)
+  this.setState({
+    eventInDetail: undefined
+  })
 }
 
+
+
+removeEventFromList = (event) => {
+  let newEvents = this.state.events.filter(
+    e => {
+      return e.id !== event.id
+    }
+  )
+  this.setState ({
+    events: newEvents
+  })
+}
+
+removeInvites = (event) => {
+  let newInvites = this.state.invites.filter(
+    i => {
+      return i.event_id !== event.id
+    }
+  )
+  this.setState ({
+    invites: newInvites
+  })
+}
+
+
   render() {
+    console.log(this.state)
     return (
       <div className="App">
         <Navbar currentUser={this.state.auth.currentUser}
@@ -185,6 +229,7 @@ handleEventDelete = (event) => {
               handleEventDetailsClick={this.handleEventDetailsClick}
               eventInDetail={this.state.eventInDetail}
               handleEventEdit={this.handleEventEdit}
+              canEditForm={this.state.canEditForm}
               handleEventDelete={this.handleEventDelete}
             />
           } } />

@@ -73,9 +73,17 @@ const deleteEvent = (event) => {
   return fetch(`${API_ROOT}/events/${event.id}`, {
     method: 'DELETE',
     headers: headers
-  }).then(res => res.json())
+  })
 }
 
+const editEvent = (id, eventItem) =>{
+  console.log(id)
+  return fetch(`${API_ROOT}/events/${id}`, {
+    method: 'PATCH',
+    headers: headers,
+    body: JSON.stringify({event: {id: id, title: eventItem.title, date_time: eventItem.date_time, event_type: eventItem.event_type, location_id: eventItem.location_id}})
+  }).then(res => res.json())
+}
 
 export default {
   eventHandlers: {
@@ -84,7 +92,8 @@ export default {
     addEvent: addEvent,
     addInvite: addInvite,
     getInvites: getInvites,
-    deleteEvent: deleteEvent
+    deleteEvent: deleteEvent,
+    editEvent: editEvent
   },
   auth: {
     login,
