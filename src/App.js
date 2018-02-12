@@ -40,6 +40,8 @@ class App extends Component {
         }
       }
     })
+    this.getInvitesAndEvents()
+    this.getLocations()
   }
 
 removeLoggedInUser = () => {
@@ -53,30 +55,36 @@ removeLoggedInUser = () => {
   this.props.history.push('/login')
 }
 
+getInvitesAndEvents = () => {
+adapter.eventHandlers.getInvites()
+  .then(resp=> this.filterInvitesForCurrentUser(resp))
+  .then(res => this.setState({
+    invites: res
+  }))
+  .then(ress => adapter.eventHandlers.getEvents())
+  .then(resp => this.filterEventsForInvites(resp))
+  .then(res => this.setState({
+    events: res
+  }))
+}
+
+getLocations = () => {
+  adapter.eventHandlers.getLocations()
+  .then(res => this.setState({
+    locations: res
+  }))
+}
+
 
   componentDidMount() {
     const token = localStorage.getItem('token');
     if (token) {
       adapter.auth.getLoggedInUser().then(user => {
         if (user) {
-          this.setState({ auth: { currentUser: user } })
+          this.setState({ auth: { currentUser: user} })
+          this.getInvitesAndEvents()
           console.log(`user: ${user.email}`)
-
-          adapter.eventHandlers.getInvites()
-          .then(resp=> this.filterInvitesForCurrentUser(resp))
-          .then(res => this.setState({
-            invites: res
-          }))
-          .then(ress => adapter.eventHandlers.getEvents())
-          .then(resp => this.filterEventsForInvites(resp))
-          .then(res => this.setState({
-            events: res
-          }))
-
-          adapter.eventHandlers.getLocations()
-          .then(res => this.setState({
-            locations: res
-          }))
+          this.getLocations()
 
         } else {
           this.setState({ auth: { currentUser: null } })
@@ -112,11 +120,13 @@ removeLoggedInUser = () => {
 handleNewEventSubmit = (event) => {
   event.preventDefault()
   adapter.eventHandlers.addEvent(this.state.newEvent)
-  .then(res => adapter.eventHandlers.addInvite( this.state.auth.currentUser.id, res.id))
-  .then(resp=>console.log(resp));
-  this.setState({
-    events: [...this.state.events, this.state.newEvent],
+  .then(resp => {
+    this.setState({
+      events: [...this.state.events, resp]
+    })
+    adapter.eventHandlers.addInvite( this.state.auth.currentUser.id, resp.id)
   });
+   
   this.setState({
     newEvent: {
       title: '',

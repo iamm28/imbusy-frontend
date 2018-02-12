@@ -15,6 +15,7 @@ class Login extends React.Component {
      } else {
        this.props.history.push('/calendar')
        this.props.setUser(resp)
+       
      }
    })
  }

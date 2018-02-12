@@ -1,15 +1,15 @@
 import React from 'react'
 import LocationDetail from './LocationDetail'
 
-const EventDetail = ({event, location, handleLocationInfoClick}) => {
-
+const EventDetail = ({event, location}) => {
 
   return(
+
     <div>
       <p>
-        {location.name} | {event.event_type}
+      {event.location_id} | {event.event_type} | {location.name}
       </p>
-      <button onClick={handleLocationInfoClick}>Location Info</button>
+      <button>Location Info</button>
       <LocationDetail location={location} />
     </div>
   )

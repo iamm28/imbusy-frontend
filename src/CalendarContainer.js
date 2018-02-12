@@ -35,9 +35,9 @@ export default class CalendarContainer extends React.Component {
      </div>
         {this.props.events.map(event => {return <EventItem
             event={event}
-            key={`${event.id}_list`} locations={this.props.locations}
-            handleLocationInfoClick={this.props.handleLocationInfoClick}
-            showLocationInDetail={this.props.showLocationInDetail}
+            key={`${event.id}_list`}
+            locations={this.props.locations}
+
           />})}
       </div>
     )

@@ -4,10 +4,11 @@ const LocationDetail = ({location}) => {
   return(
     <div>
       <p>
-        {location.name}
-        {location.address}
-        {location.website}
-        {location.phone_number}
+      {location.name}
+      {location.address}
+      {location.website}
+      {location.phone_number}
+
       </p>
     </div>
   )
