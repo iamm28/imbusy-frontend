@@ -3,21 +3,15 @@ import LocationDetail from './LocationDetail'
 
 const EventDetail = ({event,location}) => {
 
-  function getTime() {
-    let time = new Date(event.date_time)
-    if (time.getHours() > 12) {
-      return time.getHours()-12 + ":" + time.getMinutes()
-    } else {
-      return time.getHours() + ":" + time.getMinutes()
-    }
+  function getDate(event) {
+    let eventDate = new Date(event.date_time)
+    return eventDate.toLocaleDateString("en-US") + " " +eventDate.toLocaleTimeString("en-US")
   }
 
   return(
     <div>
-      <p>Detail Title - {event.title}</p>
-      <p>Detail Location id - {event.location_id}</p>
-      <p>Detail time - {getTime()}</p>
-      <button>Location Info</button>
+      <p>{event.title}</p>
+      <p>{getDate(event)}</p>
       <LocationDetail location={location} />
     </div>
   )

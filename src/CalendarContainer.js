@@ -2,6 +2,7 @@ import React from 'react'
 import EventItem from './EventItem'
 import './App.css';
 import NewEvent from './NewEvent'
+import EventPopup from './EventPopup'
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -90,7 +91,6 @@ export default class CalendarContainer extends React.Component {
       }
 
       function filterEvent(event,i) {
-        debugger
         if ((passMonth === getEventMonth(event)) && ((i+1)===getEventDay(event)) && (passYear === getEventYear(event))) {
           return true
         } else {
@@ -104,7 +104,14 @@ export default class CalendarContainer extends React.Component {
       days.push(
         <div className="day" key={i+1}>
           <h3 className="day-label">{i+1}</h3>
-          {todaysEvents.map(event => {return <EventItem event={event} key={`${event.id}_list`} locations={this.props.locations}/>})}
+          {todaysEvents.map(event => {return (
+            <EventItem
+              event={event}
+              key={`${event.id}_list`}
+              locations={this.props.locations}
+              handleEventDetailsClick={this.props.handleEventDetailsClick}
+              />
+          )})}
         </div>
       );
     }
@@ -121,10 +128,14 @@ export default class CalendarContainer extends React.Component {
            onInputChange={this.props.onInputChange}
            newEvent={this.props.newEvent}
            handleNewEventSubmit={this.props.handleNewEventSubmit}
-           handleNewEventButtonClick={this.props.handleNewEventButtonClick
-           }
+           handleNewEventButtonClick={this.props.handleNewEventButtonClick}
            />
        </div>
+       { this.props.eventInDetail &&
+         <div>
+           <EventPopup event={this.props.eventInDetail} locations={this.props.locations} handleEventEdit={this.props.handleEventEdit} handleEventDelete={this.props.handleEventDelete}/>
+         </div>
+       }
         <span>
           <button onClick={this.prevMonth}>{monthNames[this.state.month-2]}</button>
           <button onClick={this.nextMonth}>{monthNames[this.state.month]}</button>

@@ -26,8 +26,7 @@ class App extends Component {
         location_id: ''
     },
     showNewEventForm: false,
-    showLocationInDetail: false,
-    locationDetail: []
+    eventInDetail: undefined
   }
 
   setLoggedInUser = (user) => {
@@ -126,7 +125,7 @@ handleNewEventSubmit = (event) => {
     })
     adapter.eventHandlers.addInvite( this.state.auth.currentUser.id, resp.id)
   });
-   
+
   this.setState({
     newEvent: {
       title: '',
@@ -145,14 +144,21 @@ handleNewEventButtonClick = () => {
   })
 }
 
-handleLocationInfoClick = () => {
+handleEventDetailsClick = (event) => {
   this.setState({
-    showLocationInDetail: !this.state.showLocationInDetail
+    eventInDetail: event
   })
 }
 
+handleEventEdit = (event) => {
+  //
+}
+
+handleEventDelete = (event) => {
+  adapter.eventHandlers.deleteEvent(event).then(console.log)
+}
+
   render() {
-    console.log(this.state)
     return (
       <div className="App">
         <Navbar currentUser={this.state.auth.currentUser}
@@ -167,16 +173,19 @@ handleLocationInfoClick = () => {
           }} />
 
           <Route exact path="/calendar" render={ () => {
-            return <CalendarContainer events={this.state.events} authInfo={this.state.auth}
-            locations={this.state.locations}
-            onInputChange={this.onInputChange}
-            newEvent={this.state.newEvent}
-            handleNewEventSubmit={this.handleNewEventSubmit}
-            handleNewEventButtonClick={this.handleNewEventButtonClick}
-            showNewEventForm={this.state.showNewEventForm}
-            handleLocationInfoClick={this.handleLocationInfoClick}
-            showLocationInDetail={this.state.showLocationInDetail}
-
+            return <CalendarContainer
+              events={this.state.events}
+              authInfo={this.state.auth}
+              locations={this.state.locations}
+              onInputChange={this.onInputChange}
+              newEvent={this.state.newEvent}
+              handleNewEventSubmit={this.handleNewEventSubmit}
+              handleNewEventButtonClick={this.handleNewEventButtonClick}
+              showNewEventForm={this.state.showNewEventForm}
+              handleEventDetailsClick={this.handleEventDetailsClick}
+              eventInDetail={this.state.eventInDetail}
+              handleEventEdit={this.handleEventEdit}
+              handleEventDelete={this.handleEventDelete}
             />
           } } />
 

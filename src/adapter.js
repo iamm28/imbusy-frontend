@@ -69,6 +69,13 @@ const getLoggedInUser = () => {
   }).then(res => res.json())
 }
 
+const deleteEvent = (event) => {
+  return fetch(`${API_ROOT}/events/${event.id}`, {
+    method: 'DELETE',
+    headers: headers
+  }).then(res => res.json())
+}
+
 
 export default {
   eventHandlers: {
@@ -76,7 +83,8 @@ export default {
     getLocations: getLocations,
     addEvent: addEvent,
     addInvite: addInvite,
-    getInvites: getInvites
+    getInvites: getInvites,
+    deleteEvent: deleteEvent
   },
   auth: {
     login,
