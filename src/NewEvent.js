@@ -18,7 +18,7 @@ render (){
 
         <label>Event Date and Time</label>
         <input
-           type="datetime" value={this.props.newEvent.date_time} onChange={this.props.onInputChange}
+           type="datetime-local" value={this.props.newEvent.date_time} onChange={this.props.onInputChange}
            name="date_time" /> <br/>
 
         <label>Event Type</label>

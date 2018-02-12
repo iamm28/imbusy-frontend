@@ -78,7 +78,7 @@ export default class CalendarContainer extends React.Component {
     for (let i = 0; i < this.getDaysInMonth(); i++) {
 
       function getEventDay(event) {
-        return new Date(event.date_time).getDate()+1
+        return new Date(event.date_time).getDate()
       }
 
       function getEventMonth(event) {
@@ -90,6 +90,7 @@ export default class CalendarContainer extends React.Component {
       }
 
       function filterEvent(event,i) {
+        debugger
         if ((passMonth === getEventMonth(event)) && ((i+1)===getEventDay(event)) && (passYear === getEventYear(event))) {
           return true
         } else {
