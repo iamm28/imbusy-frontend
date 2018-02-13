@@ -122,7 +122,8 @@ export default class CalendarContainer extends React.Component {
   render() {
     return(
       <div>
-        <button style={this.props.showNewEventForm ? {display: 'none'} : {display:'block'} } onClick={this.props.handleNewEventButtonClick}>Add New Event</button>
+        <div id="top-of-page">
+        <button id="new-event-button" style={this.props.showNewEventForm ? {display: 'none'} : {display:'block'} } onClick={this.props.handleNewEventButtonClick}>Add New Event</button>
         <div style={this.props.showNewEventForm ? {display: 'block'} : {display:'none'} }>
            <NewEvent locations={this.props.locations}
            onInputChange={this.props.onInputChange}
@@ -133,13 +134,20 @@ export default class CalendarContainer extends React.Component {
        </div>
        { this.props.eventInDetail &&
          <div>
-           <EventPopup event={this.props.eventInDetail} locations={this.props.locations} handleEventEdit={this.props.handleEventEdit} handleEventDelete={this.props.handleEventDelete}
+           <EventPopup event={this.props.eventInDetail}
+           locations={this.props.locations}
+           showEventEdit={this.props.showEventEdit}
+           handleEventEdit={this.props.handleEventEdit}
+           handleEventDelete={this.props.handleEventDelete}
            canEditForm={this.props.canEditForm}
            onInputChange={this.props.onInputChange}
            editEvent={this.props.newEvent}
+           hideEventEdit={this.props.hideEventEdit}
+           hideEventDetail={this.props.hideEventDetail}
            />
          </div>
        }
+       </div>
         <span>
           <button onClick={this.prevMonth}>{monthNames[this.state.month-2]}</button>
           <button onClick={this.nextMonth}>{monthNames[this.state.month]}</button>

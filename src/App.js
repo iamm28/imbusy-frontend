@@ -128,16 +128,20 @@ handleNewEventSubmit = (event) => {
     adapter.eventHandlers.addInvite( this.state.auth.currentUser.id, resp.id)
   });
 
+  this.clearNewEvent()
+  this.handleNewEventButtonClick()
+
+}
+
+clearNewEvent = () => {
   this.setState({
     newEvent: {
       title: '',
       date_time: '',
       event_type: '',
       location_id: ''
-    },
-    showNewEventForm: !this.state.showNewEventForm
+    }
   })
-
 }
 
 handleNewEventButtonClick = () => {
@@ -152,7 +156,7 @@ handleEventDetailsClick = (event) => {
   })
 }
 
-handleEventEdit = (event) => {
+showEventEdit = (event) => {
   console.log(event)
   this.setState({
     canEditForm: !this.state.canEditForm,
@@ -163,8 +167,25 @@ handleEventEdit = (event) => {
       location_id: event.location_id
     }
   })
-  adapter.eventHandlers.editEvent(event.id, this.state.newEvent).then(console.log)
-  
+}
+
+hideEventDetail = () => {
+  this.clearNewEvent()
+  this.setState({
+    eventInDetail: undefined
+  })
+}
+
+hideEventEdit = () => {
+  this.clearNewEvent()
+  this.setState({
+    eventInDetail: undefined,
+    canEditForm: !this.state.canEditForm
+  })
+}
+
+handleEventEdit = (event) => {
+  adapter.eventHandlers.editEvent(event.id, this.state.newEvent).then(resp=> this.updateEventInList(resp))
 }
 
 handleEventDelete = (event) => {
@@ -176,12 +197,18 @@ handleEventDelete = (event) => {
   })
 }
 
+updateEventInList = (resp) => {
+ this.removeEventFromList(resp)
+ this.setState({
+     events: [...this.state.events, resp],
+     eventInDetail: undefined
+   })
+ }
 
 
 removeEventFromList = (event) => {
   let newEvents = this.state.events.filter(
-    e => {
-      return e.id !== event.id
+    e => { return e.id !== event.id
     }
   )
   this.setState ({
@@ -226,9 +253,12 @@ removeInvites = (event) => {
               handleNewEventSubmit={this.handleNewEventSubmit}
               handleNewEventButtonClick={this.handleNewEventButtonClick}
               showNewEventForm={this.state.showNewEventForm}
+              hideEventEdit={this.hideEventEdit}
+              hideEventDetail={this.hideEventDetail}
               handleEventDetailsClick={this.handleEventDetailsClick}
               eventInDetail={this.state.eventInDetail}
               handleEventEdit={this.handleEventEdit}
+              showEventEdit={this.showEventEdit}
               canEditForm={this.state.canEditForm}
               handleEventDelete={this.handleEventDelete}
             />

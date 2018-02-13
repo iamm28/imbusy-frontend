@@ -1,9 +1,9 @@
 import React from 'react';
-import SelectLocation from './SelectLocation'
 
-const EditEvent = ({event, handleEventEdit, onInputChange, locations, editEvent}) => {
+const EditEvent = ({event, handleEventEdit, onInputChange, locations, editEvent, hideEventEdit}) => {
   return (
-    <div>
+    <div className="form-container">
+      <button className="close" onClick={hideEventEdit}>X</button>
       <form onSubmit={()=>handleEventEdit(event)}>
         <label>Event Title</label>
         <input
@@ -44,6 +44,7 @@ const EditEvent = ({event, handleEventEdit, onInputChange, locations, editEvent}
        <br/>
         <input type="submit" value="Save Updated Event"/>
       </form>
+
     </div>
   )
 }

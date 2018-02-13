@@ -1,5 +1,5 @@
 import React from 'react'
-import EventDetail from './EventDetail'
+
 
 const EventItem = ({event, handleEventDetailsClick}) => {
 
