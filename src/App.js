@@ -27,7 +27,8 @@ class App extends Component {
     },
     showNewEventForm: false,
     eventInDetail: undefined,
-    canEditForm: false
+    canEditForm: false,
+    month: new Date().getMonth()+1
   }
 
   setLoggedInUser = (user) => {
@@ -199,12 +200,21 @@ handleEventDelete = (event) => {
 
 updateEventInList = (resp) => {
  this.removeEventFromList(resp)
+ debugger
+ this.displayMonth(resp.date_time)
  this.setState({
      events: [...this.state.events, resp],
      eventInDetail: undefined
    })
  }
 
+displayMonth = (datetime) => {
+  let month = new Date(datetime).getMonth()+1
+  debugger
+  this.setState({
+    month: month
+  })
+}
 
 removeEventFromList = (event) => {
   let newEvents = this.state.events.filter(
@@ -261,6 +271,7 @@ removeInvites = (event) => {
               showEventEdit={this.showEventEdit}
               canEditForm={this.state.canEditForm}
               handleEventDelete={this.handleEventDelete}
+              displayMonth={this.state.month}
             />
           } } />
 

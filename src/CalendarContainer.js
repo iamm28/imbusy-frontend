@@ -16,7 +16,7 @@ export default class CalendarContainer extends React.Component {
 
   state = {
     year: yyyy,
-    month: mm
+    month: this.props.displayMonth
   }
 
   getMonth() { //gets month in word form
@@ -120,6 +120,7 @@ export default class CalendarContainer extends React.Component {
 
   //fix rendering button names jan,dec
   render() {
+    console.log(this.state)
     return(
       <div>
         <div id="top-of-page">
