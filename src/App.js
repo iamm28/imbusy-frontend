@@ -18,6 +18,7 @@ class App extends Component {
     events: [],
     locations: [],
     invites: [],
+    allUsers: [],
     auth: { currentUser: null },
     newEvent: {
         title: '',
@@ -75,6 +76,13 @@ getLocations = () => {
   }))
 }
 
+getAllUsers = () => {
+  adapter.eventHandlers.getAllUsers()
+  .then(res => this.setState({
+    allUsers: res
+  }))
+}
+
 
   componentDidMount() {
     const token = localStorage.getItem('token');
@@ -85,6 +93,7 @@ getLocations = () => {
           this.getInvitesAndEvents()
           console.log(`user: ${user.email}`)
           this.getLocations()
+          this.getAllUsers()
 
         } else {
           this.setState({ auth: { currentUser: null } })
@@ -261,6 +270,7 @@ removeInvites = (event) => {
               showEventEdit={this.showEventEdit}
               canEditForm={this.state.canEditForm}
               handleEventDelete={this.handleEventDelete}
+              allUsers={this.state.allUsers}
             />
           } } />
 

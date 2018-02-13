@@ -85,6 +85,13 @@ const editEvent = (id, eventItem) =>{
   }).then(res => res.json())
 }
 
+const getAllUsers = () => {
+  return fetch(`${API_ROOT}/users`, {
+    headers: headers
+  }).then(res => res.json())
+}
+
+
 export default {
   eventHandlers: {
     getEvents: getEvents,
@@ -93,7 +100,8 @@ export default {
     addInvite: addInvite,
     getInvites: getInvites,
     deleteEvent: deleteEvent,
-    editEvent: editEvent
+    editEvent: editEvent,
+    getAllUsers: getAllUsers
   },
   auth: {
     login,

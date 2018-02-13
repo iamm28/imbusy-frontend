@@ -3,11 +3,12 @@ import EventItem from './EventItem'
 import './App.css';
 import NewEvent from './NewEvent'
 import EventPopup from './EventPopup'
+import Friends from './Friends'
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
-let today = new Date();
+let today = new Date()
 let dd = today.getDate();
 let mm = today.getMonth()+1;
 let yyyy = today.getFullYear();
@@ -132,6 +133,10 @@ export default class CalendarContainer extends React.Component {
            handleNewEventButtonClick={this.props.handleNewEventButtonClick}
            />
        </div>
+
+         <Friends allUsers={this.props.allUsers} />
+
+
        { this.props.eventInDetail &&
          <div>
            <EventPopup event={this.props.eventInDetail}

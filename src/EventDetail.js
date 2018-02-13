@@ -5,7 +5,7 @@ const EventDetail = ({event,location}) => {
 
   function getDate(event) {
     let eventDate = new Date(event.date_time)
-    return eventDate.toLocaleDateString("en-US") + " " +eventDate.toLocaleTimeString("en-US")
+    return eventDate.toLocaleDateString("en-US") + " " +eventDate.toLocaleTimeString("en-US", { timeZone: "America/New_York" })
   }
 
   return(
