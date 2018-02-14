@@ -25,10 +25,17 @@ class App extends Component {
         event_type: '',
         location_id: ''
     },
+    editEvent: {
+        id: '',
+        title: '',
+        date_time: '',
+        event_type: '',
+        location_id: ''
+    },
     showNewEventForm: false,
     eventInDetail: undefined,
     canEditForm: false,
-    month: new Date().getMonth()+1
+    month: new Date().getMonth()+1,
   }
 
   setLoggedInUser = (user) => {
@@ -118,8 +125,18 @@ getLocations = () => {
   })
   }
 
+  onEditInputChange = (e) => {
+    this.setState({
+      editEvent: {
+        ...this.state.editEvent,
+        [e.target.name]: e.target.value
+    }
+  })
+  }
+
 
 handleNewEventSubmit = (event) => {
+  console.log(this.state.newEvent)
   event.preventDefault()
   adapter.eventHandlers.addEvent(this.state.newEvent)
   .then(resp => {
@@ -145,6 +162,17 @@ clearNewEvent = () => {
   })
 }
 
+clearEditEvent = () => {
+  this.setState({
+    editEvent: {
+      title: '',
+      date_time: '',
+      event_type: '',
+      location_id: ''
+    }
+  })
+}
+
 handleNewEventButtonClick = () => {
   this.setState({
     showNewEventForm: !this.state.showNewEventForm
@@ -158,10 +186,10 @@ handleEventDetailsClick = (event) => {
 }
 
 showEventEdit = (event) => {
-  console.log(event)
   this.setState({
     canEditForm: !this.state.canEditForm,
-    newEvent: {
+    editEvent: {
+      id: event.id,
       title: event.title,
       date_time: event.date_time,
       event_type: event.event_type,
@@ -178,15 +206,19 @@ hideEventDetail = () => {
 }
 
 hideEventEdit = () => {
-  this.clearNewEvent()
+  this.clearEditEvent()
   this.setState({
     eventInDetail: undefined,
     canEditForm: !this.state.canEditForm
   })
 }
 
-handleEventEdit = (event) => {
-  adapter.eventHandlers.editEvent(event.id, this.state.newEvent).then(resp=> this.updateEventInList(resp))
+handleEventEdit = (e) => {
+  e.preventDefault()
+
+  adapter.eventHandlers.editEvent(this.state.editEvent)
+  .then(res=> this.continueEventEdit(res))
+
 }
 
 handleEventDelete = (event) => {
@@ -198,23 +230,18 @@ handleEventDelete = (event) => {
   })
 }
 
-updateEventInList = (resp) => {
- this.removeEventFromList(resp)
- debugger
- this.displayMonth(resp.date_time)
- this.setState({
-     events: [...this.state.events, resp],
-     eventInDetail: undefined
-   })
- }
-
-displayMonth = (datetime) => {
-  let month = new Date(datetime).getMonth()+1
-  debugger
-  this.setState({
+continueEventEdit = (res) => {
+  console.log(`${res} resp` )
+this.removeEventFromList(res)
+let month = new Date(res.date_time).getMonth()+1
+this.setState({
+    events: [...this.state.events, res],
+    eventInDetail: undefined,
     month: month
   })
+this.clearEditEvent()
 }
+
 
 removeEventFromList = (event) => {
   let newEvents = this.state.events.filter(
@@ -263,14 +290,18 @@ removeInvites = (event) => {
               handleNewEventSubmit={this.handleNewEventSubmit}
               handleNewEventButtonClick={this.handleNewEventButtonClick}
               showNewEventForm={this.state.showNewEventForm}
+
               hideEventEdit={this.hideEventEdit}
               hideEventDetail={this.hideEventDetail}
               handleEventDetailsClick={this.handleEventDetailsClick}
               eventInDetail={this.state.eventInDetail}
+              editEvent={this.state.editEvent}
               handleEventEdit={this.handleEventEdit}
               showEventEdit={this.showEventEdit}
               canEditForm={this.state.canEditForm}
               handleEventDelete={this.handleEventDelete}
+              onEditInputChange={this.onEditInputChange}
+
               displayMonth={this.state.month}
             />
           } } />
@@ -289,3 +320,30 @@ removeInvites = (event) => {
 export default withRouter(App);
 
 // .then(res => adapter.eventHandlers.addInvite(res.id, this.state.currentUser.id))
+//
+// .then(resp=> this.addEditedEvent(resp))
+// .then(res=> this.continueEventEdit(this.state.editedEvent))
+
+
+// showEventEdit = (event) => {
+//   console.log(this.state.editEvent)
+//   let editDT= new Date(event.date_time)
+//   let editDay= editDT.getDate() > 10 ? editDT.getDate() : `0${editDT.getDate()}`
+//   let editMonth = editDT.getMonth()+1 > 10 ? editDT.getMonth()+1 : `0${editDT.getMonth()+1}`
+//   let editYear = editDT.getFullYear()
+//   let editHours= editDT.getHours()
+//   let editMinutes= editDT.getMinutes()
+//   this.setState({
+//     canEditForm: !this.state.canEditForm,
+//     editEvent: {
+//       id: event.id,
+//       title: event.title,
+//       date_time: `${editYear}-${editMonth}-${editDay}T${editHours}:${editMinutes}:00`,
+//       event_type: event.event_type,
+//       location_id: event.location_id
+//     }
+//   })
+// }
+
+
+  // month: new Date().getMonth()+1,

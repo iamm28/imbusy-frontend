@@ -9,10 +9,12 @@ const EventDetail = ({event,location}) => {
   }
 
   return(
-    <div>
-      <p>{event.title}</p>
-      <p>{getDate(event)}</p>
+    <div >
+      <p>Title: {event.title} <br/>
+      Time: {getDate(event)}  <br/>
+      Location: <br/>
       <LocationDetail location={location} />
+      </p>
     </div>
   )
 }

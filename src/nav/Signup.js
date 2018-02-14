@@ -1,6 +1,8 @@
 import React from 'react';
 import adapter from '../adapter';
 
+let welcomeNewMessage = "Welcome to I'm Busy"
+
 class Signup extends React.Component {
   state = {
     full_name: '',
@@ -29,7 +31,9 @@ class Signup extends React.Component {
 
 render(){
   return (
-    <div>
+    <div className="form-holder">
+    <div className="form-div-with-titles">
+    <h1>{welcomeNewMessage}</h1>
     <h2>Join Here!</h2>
     <form onSubmit={this.handleSignup}>
       <label>Full Name</label>
@@ -46,6 +50,7 @@ render(){
 
       <input type="submit" value="Sign Up" />
     </form>
+    </div>
     </div>
   )
 }

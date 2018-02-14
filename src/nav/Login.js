@@ -1,6 +1,8 @@
 import React from 'react';
 import adapter from '../adapter';
 
+let welcomeMessage = "Welcome Back to I'm Busy"
+
 class Login extends React.Component {
   state = {
     email: '',
@@ -15,7 +17,7 @@ class Login extends React.Component {
      } else {
        this.props.history.push('/calendar')
        this.props.setUser(resp)
-       
+
      }
    })
  }
@@ -28,8 +30,11 @@ class Login extends React.Component {
 
 render(){
   return (
-    <div>
+    <div className="form-holder">
+    <div className="form-div-with-titles">
+    <h1>{welcomeMessage} </h1>
     <h2>Sign In</h2>
+    <div>
     <form onSubmit={this.handleLogin}>
       <label>Email </label>
       <input value={this.state.email} name="email" type="email" placeholder="Email" onChange={this.onInputChange}/> <br/>
@@ -38,6 +43,8 @@ render(){
       <input value={this.state.password} name="password" type="password" placeholder="Password" onChange={this.onInputChange}/> <br/>
       <input type="submit" value="Submit" />
     </form>
+    </div>
+    </div>
     </div>
   )
 }

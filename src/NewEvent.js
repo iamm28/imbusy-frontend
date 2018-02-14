@@ -6,10 +6,13 @@ class NewEvent extends React.Component {
 
 render (){
   return (
-    <div className="form-container">
-     <button className="close" onClick={this.props.handleNewEventButtonClick}>X</button>
-      <h1> new event form</h1>
+    <div className="form-holder">
+    <div className="form-div-with-titles">
+    <button className="close" onClick={this.props.handleNewEventButtonClick}>X</button>
+    <h3> Add Something Else To-Do</h3>
+
       <form onSubmit={this.props.handleNewEventSubmit}>
+
         <label>Event Title</label>
         <input
           type="text"
@@ -38,6 +41,7 @@ render (){
          /> <br/>
         <input type="submit" value="Add Event"/>
       </form>
+      </div>
     </div>
   )
 }

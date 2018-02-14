@@ -5,11 +5,11 @@ import NewEvent from './NewEvent'
 import EventPopup from './EventPopup'
 
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+// const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
 let today = new Date();
-let dd = today.getDate();
-let mm = today.getMonth()+1;
+// let dd = today.getDate();
+// let mm = today.getMonth()+1;
 let yyyy = today.getFullYear();
 
 export default class CalendarContainer extends React.Component {
@@ -124,7 +124,10 @@ export default class CalendarContainer extends React.Component {
     return(
       <div>
         <div id="top-of-page">
+        <h2>My Super Busy Schedule</h2> 
         <button id="new-event-button" style={this.props.showNewEventForm ? {display: 'none'} : {display:'block'} } onClick={this.props.handleNewEventButtonClick}>Add New Event</button>
+
+        </div>
         <div style={this.props.showNewEventForm ? {display: 'block'} : {display:'none'} }>
            <NewEvent locations={this.props.locations}
            onInputChange={this.props.onInputChange}
@@ -141,14 +144,14 @@ export default class CalendarContainer extends React.Component {
            handleEventEdit={this.props.handleEventEdit}
            handleEventDelete={this.props.handleEventDelete}
            canEditForm={this.props.canEditForm}
-           onInputChange={this.props.onInputChange}
-           editEvent={this.props.newEvent}
+           onEditInputChange={this.props.onEditInputChange}
+           editEvent={this.props.editEvent}
            hideEventEdit={this.props.hideEventEdit}
            hideEventDetail={this.props.hideEventDetail}
            />
          </div>
        }
-       </div>
+
         <span>
           <button onClick={this.prevMonth}>{monthNames[this.state.month-2]}</button>
           <button onClick={this.nextMonth}>{monthNames[this.state.month]}</button>

@@ -25,11 +25,11 @@ const getInvites = () => {
   }).then(res => res.json())
 }
 
-const addEvent = (newEvent) => {
+const addEvent = (eventItem) => {
   return fetch(`${API_ROOT}/events`, {
     method: 'POST',
     headers: headers,
-    body: JSON.stringify({event: newEvent})
+    body: JSON.stringify({event: {id: eventItem.id, title: eventItem.title, date_time: `${eventItem.date_time}-400`, event_type: eventItem.event_type, location_id: eventItem.location_id}})
   }).then(res => res.json())
 }
 
@@ -76,12 +76,11 @@ const deleteEvent = (event) => {
   })
 }
 
-const editEvent = (id, eventItem) =>{
-  console.log(id)
-  return fetch(`${API_ROOT}/events/${id}`, {
+const editEvent = (eventItem) =>{
+  return fetch(`${API_ROOT}/events/${eventItem.id}`, {
     method: 'PATCH',
     headers: headers,
-    body: JSON.stringify({event: {id: id, title: eventItem.title, date_time: eventItem.date_time, event_type: eventItem.event_type, location_id: eventItem.location_id}})
+    body: JSON.stringify({event: {id: eventItem.id, title: eventItem.title, date_time: `${eventItem.date_time}-400`, event_type: eventItem.event_type, location_id: eventItem.location_id}})
   }).then(res => res.json())
 }
 
@@ -101,3 +100,11 @@ export default {
     signup
   }
 }
+//
+// const addEvent = (newEvent) => {
+//   return fetch(`${API_ROOT}/events`, {
+//     method: 'POST',
+//     headers: headers,
+//     body: JSON.stringify({event: newEvent})
+//   }).then(res => res.json())
+// }
