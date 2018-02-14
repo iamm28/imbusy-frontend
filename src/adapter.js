@@ -29,7 +29,7 @@ const addEvent = (eventItem) => {
   return fetch(`${API_ROOT}/events`, {
     method: 'POST',
     headers: headers,
-    body: JSON.stringify({event: {id: eventItem.id, title: eventItem.title, date_time: `${eventItem.date_time}-400`, event_type: eventItem.event_type, location_id: eventItem.location_id}})
+    body: JSON.stringify({event: {id: eventItem.id, title: eventItem.title, date_time: `${eventItem.date_time}-500`, event_type: eventItem.event_type, location_id: eventItem.location_id}})
   }).then(res => res.json())
 }
 
@@ -80,7 +80,7 @@ const editEvent = (eventItem) =>{
   return fetch(`${API_ROOT}/events/${eventItem.id}`, {
     method: 'PATCH',
     headers: headers,
-    body: JSON.stringify({event: {id: eventItem.id, title: eventItem.title, date_time: `${eventItem.date_time}-400`, event_type: eventItem.event_type, location_id: eventItem.location_id}})
+    body: JSON.stringify({event: {id: eventItem.id, title: eventItem.title, date_time: `${eventItem.date_time}-500`, event_type: eventItem.event_type, location_id: eventItem.location_id}})
   }).then(res => res.json())
 }
 

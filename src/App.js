@@ -237,7 +237,8 @@ let month = new Date(res.date_time).getMonth()+1
 this.setState({
     events: [...this.state.events, res],
     eventInDetail: undefined,
-    month: month
+    month: month,
+    canEditForm: !this.state.canEditForm
   })
 this.clearEditEvent()
 }
