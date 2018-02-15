@@ -9,14 +9,15 @@ const EventDetail = ({event,location}) => {
   }
 
   return(
-    <div >
-      <p>Title: {event.title} <br/>
-      Time: {getDate(event)}  <br/>
-      Location:   </p>
+    <div className="eventDiv">
+      <p>
+        Title: {event.title} <br/>
+        Time: {getDate(event)}  <br/>
+      </p>
       <LocationDetail location={location} />
-
     </div>
   )
 }
 
 export default EventDetail
+// Location: {location.name}

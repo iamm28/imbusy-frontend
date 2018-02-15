@@ -72,6 +72,13 @@
   to { transform: rotate(360deg); }
 }
 
+.eventDiv p {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+.locationDiv {
+  padding-left: 1.5em;
+}
 header {
     text-align: center;
 }
